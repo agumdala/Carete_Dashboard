@@ -17,6 +17,7 @@ import {
   IdCard
 } from "lucide-react";
 import StatusBadge from "./components/StatusBadge";
+import careteLogo from "./assets/carete_logo.png";
 import "./Members.css";
 
 const Members: React.FC = () => {
@@ -38,7 +39,7 @@ const Members: React.FC = () => {
       {/* Sidebar */}
       <aside className="sidebar">
         <div className="logo">
-          <img src="/src/assets/carete_logo.png" alt="Carete" className="logo-img" />
+          <img src={careteLogo} alt="Carete" className="logo-img" />
         </div>
 
         <nav className="nav-menu">

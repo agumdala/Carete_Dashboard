@@ -14,6 +14,7 @@ import {
   ChevronDown,
   Download
 } from "lucide-react";
+import careteLogo from "./assets/carete_logo.png";
 import "./Reports.css";
 
 const Reports: React.FC = () => {
@@ -45,7 +46,7 @@ const Reports: React.FC = () => {
       {/* Sidebar */}
       <aside className="sidebar">
         <div className="logo">
-          <img src="/src/assets/carete_logo.png" alt="Carete" className="logo-img" />
+          <img src={careteLogo} alt="Carete" className="logo-img" />
         </div>
 
         <nav className="nav-menu">
