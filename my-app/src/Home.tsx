@@ -1,4 +1,22 @@
 import React from "react";
+import { Link } from "react-router-dom";
+import {
+  LayoutDashboard,
+  Users,
+  FileText,
+  BarChart3,
+  Settings,
+  CreditCard,
+  User,
+  HelpCircle,
+  Search,
+  Bell,
+  ChevronDown,
+  Clock,
+  CheckCircle,
+  AlertTriangle
+} from "lucide-react";
+import StatusBadge from "./components/StatusBadge";
 import "./Home.css";
 
 const Home: React.FC = () => {
@@ -7,29 +25,37 @@ const Home: React.FC = () => {
       {/* Sidebar */}
       <aside className="sidebar">
         <div className="logo">
-          <span className="logo-text">Carete</span>
+          <img src="/src/assets/carete_logo.png" alt="Carete" className="logo-img" />
         </div>
 
         <nav className="nav-menu">
           <div className="menu-section">
             <span className="menu-label">MENU</span>
             <ul>
-              <li className="active">
-                <span className="nav-icon">📊</span>
-                Dashboard
-              </li>
-              <li>
-                <span className="nav-icon">👥</span>
-                Members
-              </li>
-              <li>
-                <span className="nav-icon">📄</span>
-                Claims
-              </li>
-              <li>
-                <span className="nav-icon">📈</span>
-                Reports
-              </li>
+              <Link to="/" style={{ textDecoration: 'none' }}>
+                <li className="active">
+                  <LayoutDashboard size={18} />
+                  Dashboard
+                </li>
+              </Link>
+              <Link to="/members" style={{ textDecoration: 'none' }}>
+                <li>
+                  <Users size={18} />
+                  Members
+                </li>
+              </Link>
+              <Link to="/claims" style={{ textDecoration: 'none' }}>
+                <li>
+                  <FileText size={18} />
+                  Claims
+                </li>
+              </Link>
+              <Link to="/reports" style={{ textDecoration: 'none' }}>
+                <li>
+                  <BarChart3 size={18} />
+                  Reports
+                </li>
+              </Link>
             </ul>
           </div>
 
@@ -37,19 +63,19 @@ const Home: React.FC = () => {
             <span className="menu-label">OTHERS</span>
             <ul>
               <li>
-                <span className="nav-icon">⚙️</span>
+                <Settings size={18} />
                 Settings
               </li>
               <li>
-                <span className="nav-icon">💳</span>
+                <CreditCard size={18} />
                 Payment
               </li>
               <li>
-                <span className="nav-icon">👤</span>
+                <User size={18} />
                 Accounts
               </li>
               <li>
-                <span className="nav-icon">❓</span>
+                <HelpCircle size={18} />
                 Help
               </li>
             </ul>
@@ -62,14 +88,17 @@ const Home: React.FC = () => {
         {/* Header */}
         <header className="header">
           <div className="search-bar">
-            <span className="search-icon">🔍</span>
+            <Search size={18} className="search-icon" />
             <input type="text" placeholder="Search" />
           </div>
           <div className="user-profile">
-            <div className="user-avatar"></div>
+            <div className="user-avatar">🍎</div>
             <span className="user-name">Unity Roots</span>
-            <span className="dropdown-icon">▼</span>
-            <span className="notification-icon">🔔</span>
+            <ChevronDown size={14} />
+            <div className="notification-wrapper">
+              <Bell size={18} />
+              <span className="notification-dot"></span>
+            </div>
           </div>
         </header>
 
@@ -85,28 +114,28 @@ const Home: React.FC = () => {
             <div className="stat-card">
               <div className="stat-header">
                 <span className="stat-label">Pending Eligibility</span>
-                <span className="stat-icon pending">🕐</span>
+                <span className="stat-icon pending"><Clock size={20} /></span>
               </div>
               <span className="stat-value">12</span>
             </div>
             <div className="stat-card">
               <div className="stat-header">
                 <span className="stat-label">Active Enrollments</span>
-                <span className="stat-icon active">✓</span>
+                <span className="stat-icon active"><CheckCircle size={20} /></span>
               </div>
               <span className="stat-value">12</span>
             </div>
             <div className="stat-card">
               <div className="stat-header">
                 <span className="stat-label">Claims Submitted</span>
-                <span className="stat-icon submitted">📄</span>
+                <span className="stat-icon submitted"><FileText size={20} /></span>
               </div>
               <span className="stat-value">45</span>
             </div>
             <div className="stat-card">
               <div className="stat-header">
                 <span className="stat-label">Alerts</span>
-                <span className="stat-icon alerts">⚠️</span>
+                <span className="stat-icon alerts"><AlertTriangle size={20} /></span>
               </div>
               <span className="stat-value">3</span>
             </div>
@@ -123,31 +152,31 @@ const Home: React.FC = () => {
               <div className="queue-list">
                 <div className="queue-item">
                   <div className="item-info">
-                    <span className="item-icon">👤</span>
+                    <User size={16} className="item-icon" />
                     <span className="item-name">Maria Garcia</span>
                   </div>
                   <div className="item-status">
-                    <span className="status-badge pending">🕐 Pending</span>
+                    <StatusBadge status="pending" />
                     <span className="item-date">11-14-2025</span>
                   </div>
                 </div>
                 <div className="queue-item">
                   <div className="item-info">
-                    <span className="item-icon">👤</span>
+                    <User size={16} className="item-icon" />
                     <span className="item-name">James Wilson</span>
                   </div>
                   <div className="item-status">
-                    <span className="status-badge pending">🕐 Pending</span>
+                    <StatusBadge status="pending" />
                     <span className="item-date">11-01-2025</span>
                   </div>
                 </div>
                 <div className="queue-item">
                   <div className="item-info">
-                    <span className="item-icon">👤</span>
+                    <User size={16} className="item-icon" />
                     <span className="item-name">Sarah Chen</span>
                   </div>
                   <div className="item-status">
-                    <span className="status-badge approved">✓ Approved</span>
+                    <StatusBadge status="approved" />
                     <span className="item-date">10-28-2025</span>
                   </div>
                 </div>
@@ -164,31 +193,31 @@ const Home: React.FC = () => {
               <div className="claims-list">
                 <div className="claim-item">
                   <div className="item-info">
-                    <span className="item-icon">📄</span>
+                    <FileText size={16} className="item-icon" />
                     <span className="item-name">CLM-2025-1236</span>
                   </div>
                   <div className="item-status">
-                    <span className="status-badge submitted">🕐 Submitted</span>
+                    <StatusBadge status="submitted" />
                     <span className="item-date">11-14-2025</span>
                   </div>
                 </div>
                 <div className="claim-item">
                   <div className="item-info">
-                    <span className="item-icon">📄</span>
+                    <FileText size={16} className="item-icon" />
                     <span className="item-name">CLM-2025-1235</span>
                   </div>
                   <div className="item-status">
-                    <span className="status-badge denied">✕ Denied</span>
+                    <StatusBadge status="denied" />
                     <span className="item-date">11-01-2025</span>
                   </div>
                 </div>
                 <div className="claim-item">
                   <div className="item-info">
-                    <span className="item-icon">📄</span>
+                    <FileText size={16} className="item-icon" />
                     <span className="item-name">CLM-2025-1234</span>
                   </div>
                   <div className="item-status">
-                    <span className="status-badge paid">✓ Paid</span>
+                    <StatusBadge status="paid" />
                     <span className="item-date">10-28-2025</span>
                   </div>
                 </div>
@@ -200,7 +229,7 @@ const Home: React.FC = () => {
           {/* Alerts & Notifications */}
           <div className="card alerts-section">
             <div className="alerts-header">
-              <span className="alerts-icon">⚠️</span>
+              <AlertTriangle size={24} className="alerts-icon" />
               <div>
                 <h2>Alerts & Notifications</h2>
                 <p>Important updates and action items</p>
