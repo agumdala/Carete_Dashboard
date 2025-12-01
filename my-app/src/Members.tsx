@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import {
   LayoutDashboard,
@@ -17,21 +17,21 @@ import {
   IdCard
 } from "lucide-react";
 import StatusBadge from "./components/StatusBadge";
+import AddMemberModal from "./components/AddMemberModal";
 import careteLogo from "./assets/carete_logo.png";
+import membersData from "./data/members.json";
+import { type Member, appendMemberToData } from "./utils/membersUtils";
 import "./Members.css";
 
 const Members: React.FC = () => {
-  const members = [
-    { name: "Maria Garcia", id: "M-001", dob: "03-15-1978", mcp: "LA Care", lastService: "N/A", status: "pending" },
-    { name: "James Wilson", id: "M-007", dob: "03-13-1988", mcp: "LA Care", lastService: "N/A", status: "pending" },
-    { name: "Sarah Chen", id: "M-005", dob: "07-08-1998", mcp: "Health Net", lastService: "10-08-2025", status: "active" },
-    { name: "Robert Johnson", id: "M-004", dob: "03-15-1978", mcp: "Blue Shield Promise", lastService: "11-01-2025", status: "active" },
-    { name: "Jane Smith", id: "M-002", dob: "02-21-1978", mcp: "Health Net", lastService: "10-28-2025", status: "active" },
-    { name: "John Doe", id: "M-003", dob: "05-12-1975", mcp: "Blue Shield Promise", lastService: "10-25-2025", status: "pending" },
-    { name: "Henry Hardly", id: "M-006", dob: "04-21-1990", mcp: "LA Care", lastService: "N/A", status: "pending" },
-    { name: "Quinn Ledger", id: "M-008", dob: "05-16-1999", mcp: "Unknown", lastService: "N/A", status: "ineligible" },
-    { name: "Draco Malfroy", id: "M-010", dob: "06-05-1980", mcp: "Regal Herbs", lastService: "N/A", status: "pending" },
-  ];
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [members, setMembers] = useState<Member[]>(membersData as Member[]);
+
+  const handleAddMember = (newMember: Member) => {
+    // Add new member to state
+    const updatedMembers = appendMemberToData(members, newMember);
+    setMembers(updatedMembers);
+  };
 
 
   return (
@@ -123,7 +123,7 @@ const Members: React.FC = () => {
               <h1>Members</h1>
               <p>Manage member profiles and eligibility</p>
             </div>
-            <button className="add-member-btn">
+            <button className="add-member-btn" onClick={() => setIsModalOpen(true)}>
               <UserPlus size={18} />
               Add Member
             </button>
@@ -150,7 +150,7 @@ const Members: React.FC = () => {
 
             {/* Members Table */}
             <div className="members-table">
-              {members.map((member, index) => (
+              {members.reverse().map((member, index) => (
                 <div className="member-row" key={index}>
                   <div className="member-info">
                     <IdCard size={24} className="member-icon" />
@@ -182,6 +182,13 @@ const Members: React.FC = () => {
           </div>
         </div>
       </main>
+
+      {/* Add Member Modal */}
+      <AddMemberModal 
+        isOpen={isModalOpen} 
+        onClose={() => setIsModalOpen(false)}
+        onAddMember={handleAddMember}
+      />
     </div>
   );
 };
