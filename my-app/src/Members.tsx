@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   LayoutDashboard,
   Users,
@@ -24,6 +24,7 @@ import { type Member, appendMemberToData } from "./utils/membersUtils";
 import "./Members.css";
 
 const Members: React.FC = () => {
+  const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [members, setMembers] = useState<Member[]>(membersData as Member[]);
 
@@ -175,7 +176,12 @@ const Members: React.FC = () => {
                     <span className="field-label">Status</span>
                     <StatusBadge status={member.status as "pending" | "active" | "ineligible"} />
                   </div>
-                  <button className="view-details-btn">View Details</button>
+                  <button
+                    className="view-details-btn"
+                    onClick={() => navigate(`/members/${member.id}`)}
+                  >
+                    View Details
+                  </button>
                 </div>
               ))}
             </div>
