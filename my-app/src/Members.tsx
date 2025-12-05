@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
   LayoutDashboard,
@@ -27,11 +27,79 @@ const Members: React.FC = () => {
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [members, setMembers] = useState<Member[]>(membersData as Member[]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [showFilter, setShowFilter] = useState(false);
+  const [filterType, setFilterType] = useState<"dob" | "mcp" | "status" | null>(null);
+  const [filterValue, setFilterValue] = useState<string>("");
+  const filterDropdownRef = useRef<HTMLDivElement>(null);
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (filterDropdownRef.current && !filterDropdownRef.current.contains(event.target as Node)) {
+        setShowFilter(false);
+      }
+    };
+
+    if (showFilter) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [showFilter]);
 
   const handleAddMember = (newMember: Member) => {
     // Add new member to state
     const updatedMembers = appendMemberToData(members, newMember);
     setMembers(updatedMembers);
+  };
+
+  // Get unique MCP values for filter dropdown
+  const uniqueMcps = Array.from(new Set(members.map(m => m.mcp)));
+
+  // Filter members based on search term and selected filter
+  const filteredMembers = members.filter((member) => {
+    // Apply search filter
+    const searchLower = searchTerm.toLowerCase();
+    const matchesSearch = 
+      member.name.toLowerCase().includes(searchLower) ||
+      member.id.toLowerCase().includes(searchLower) ||
+      member.dob.toLowerCase().includes(searchLower) ||
+      member.mcp.toLowerCase().includes(searchLower);
+
+    // Apply selected filter
+    let matchesFilter = true;
+    if (filterType && filterValue) {
+      switch (filterType) {
+        case "dob":
+          matchesFilter = member.dob.toLowerCase().includes(filterValue.toLowerCase());
+          break;
+        case "mcp":
+          matchesFilter = member.mcp === filterValue;
+          break;
+        case "status":
+          matchesFilter = member.status === filterValue.toLowerCase();
+          break;
+      }
+    }
+
+    return matchesSearch && matchesFilter;
+  });
+
+  // Reverse the array to show newest first (without mutating the original)
+  const displayMembers = [...filteredMembers].reverse();
+
+  const handleFilterSelect = (type: "dob" | "mcp" | "status") => {
+    setFilterType(type);
+    setFilterValue("");
+    setShowFilter(false);
+  };
+
+  const clearFilter = () => {
+    setFilterType(null);
+    setFilterValue("");
   };
 
 
@@ -140,18 +208,89 @@ const Members: React.FC = () => {
               <div className="card-actions">
                 <div className="member-search-bar">
                   <Search size={16} className="search-icon" />
-                  <input type="text" placeholder="Search by name, ID, or date birth..." />
+                  <input 
+                    type="text" 
+                    placeholder="Search by name, ID, or date birth..." 
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                  />
                 </div>
-                <button className="filter-btn">
-                  <Filter size={16} />
-                  Filter by
-                </button>
+                <div className="filter-dropdown" ref={filterDropdownRef}>
+                  <button className="filter-btn" onClick={() => setShowFilter(!showFilter)}>
+                    <Filter size={16} />
+                    Filter by
+                  </button>
+                  {showFilter && (
+                    <div className="filter-menu">
+                      <button 
+                        className="filter-option"
+                        onClick={() => handleFilterSelect("dob")}
+                      >
+                        DOB
+                      </button>
+                      <button 
+                        className="filter-option"
+                        onClick={() => handleFilterSelect("mcp")}
+                      >
+                        MCP
+                      </button>
+                      <button 
+                        className="filter-option"
+                        onClick={() => handleFilterSelect("status")}
+                      >
+                        Status
+                      </button>
+                    </div>
+                  )}
+                  {filterType && (
+                    <div className="filter-input-container">
+                      {filterType === "dob" && (
+                        <input
+                          type="text"
+                          className="filter-input"
+                          placeholder="Enter date (MM-DD-YYYY)"
+                          value={filterValue}
+                          onChange={(e) => setFilterValue(e.target.value)}
+                        />
+                      )}
+                      {filterType === "mcp" && (
+                        <select
+                          className="filter-select"
+                          value={filterValue}
+                          onChange={(e) => setFilterValue(e.target.value)}
+                        >
+                          <option value="">Select MCP</option>
+                          {uniqueMcps.map((mcp) => (
+                            <option key={mcp} value={mcp}>
+                              {mcp}
+                            </option>
+                          ))}
+                        </select>
+                      )}
+                      {filterType === "status" && (
+                        <select
+                          className="filter-select"
+                          value={filterValue}
+                          onChange={(e) => setFilterValue(e.target.value)}
+                        >
+                          <option value="">Select Status</option>
+                          <option value="pending">Pending</option>
+                          <option value="active">Active</option>
+                          <option value="ineligible">Ineligible</option>
+                        </select>
+                      )}
+                      <button className="clear-filter-btn" onClick={clearFilter}>
+                        Clear
+                      </button>
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
 
             {/* Members Table */}
             <div className="members-table">
-              {members.reverse().map((member, index) => (
+              {displayMembers.map((member, index) => (
                 <div className="member-row" key={index}>
                   <div className="member-info">
                     <IdCard size={24} className="member-icon" />
