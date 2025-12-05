@@ -16,8 +16,10 @@ import {
 } from "lucide-react";
 import careteLogo from "./assets/carete_logo.png";
 import "./Reports.css";
+import { useNavigate } from "react-router-dom";
 
 const Reports: React.FC = () => {
+  const navigate = useNavigate();
   const reports = [
     {
       name: "Monthly Financial Report",
@@ -45,9 +47,11 @@ const Reports: React.FC = () => {
     <div className="dashboard-container">
       {/* Sidebar */}
       <aside className="sidebar">
-        <div className="logo">
-          <img src={careteLogo} alt="Carete" className="logo-img" />
-        </div>
+        <span  className="logo-link" onClick={() => navigate('/')}>
+          <div className="logo">
+            <img src={careteLogo} alt="Carete" className="logo-img" />
+          </div>
+        </span>
 
         <nav className="nav-menu">
           <div className="menu-section">

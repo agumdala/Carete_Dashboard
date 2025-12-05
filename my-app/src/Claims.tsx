@@ -19,6 +19,7 @@ import {
 import StatusBadge from "./components/StatusBadge";
 import careteLogo from "./assets/carete_logo.png";
 import "./Claims.css";
+import { useNavigate } from "react-router-dom";
 
 const Claims: React.FC = () => {
   const claims = [
@@ -28,15 +29,18 @@ const Claims: React.FC = () => {
     { id: "CLM-2024-1237", date: "10-23-2025", member: "Maria Garcia", service: "Housing Support", serviceDate: "09-11-2025", status: "denied" },
     { id: "CLM-2024-1238", date: "10-19-2025", member: "Jeffery Wisch", service: "Care Coordination", serviceDate: "10-11-2025", status: "active" },
   ];
+  const navigate = useNavigate();
 
 
   return (
     <div className="dashboard-container">
       {/* Sidebar */}
       <aside className="sidebar">
-        <div className="logo">
-          <img src={careteLogo} alt="Carete" className="logo-img" />
-        </div>
+        <span  className="logo-link" onClick={() => navigate('/')}>
+          <div className="logo">
+            <img src={careteLogo} alt="Carete" className="logo-img" />
+          </div>
+        </span>
 
         <nav className="nav-menu">
           <div className="menu-section">

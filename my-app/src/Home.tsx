@@ -25,9 +25,11 @@ const Home: React.FC = () => {
     <div className="dashboard-container">
       {/* Sidebar */}
       <aside className="sidebar">
-        <div className="logo">
-          <img src={careteLogo} alt="Carete" className="logo-img" />
-        </div>
+        <span  className="logo-link" onClick={() => navigate('/')}>
+          <div className="logo">
+            <img src={careteLogo} alt="Carete" className="logo-img" />
+          </div>
+        </span>
 
         <nav className="nav-menu">
           <div className="menu-section">
